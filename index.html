@@ -12,6 +12,7 @@
         .app,.daka{height: 100%;position: relative;}
         .daka-item{height: 50%;border:1px solid #ddd;font-size: 30px;display: flex;align-items: center;justify-content: space-around;box-sizing: border-box;}
         .daka-item.active{ background: #77C34F;color:#fff;}
+        .daka-item.error{ background:red;}
         .slip{ position: absolute;width: 100%;height: 100%;left: 0;background:#fff;top:-100%;opacity:0;transition: all .6s;-webkit-transition: all .6s;overflow:hidden;
             /*top:0;opacity:1;*/
         }
@@ -120,6 +121,9 @@
                 Data.thisMonth[date][mn] = time;
                 this.renderDakaDom(mn,time);
                 this.updateData();
+                if(mn == 'n'){
+                    this.dealTodayError(Data.thisMonth[date]);
+                }
             },
             cancel: function(mn){
                 this.renderDakaDom(mn,'');
@@ -132,6 +136,24 @@
             updateData: function(){
                 this.renderThisMonthCL();
                 store.set(DATA_DAKA,Data);
+            },
+            ifEnough: function(time1,time2){
+                return new Date('2000/1/1 '+time2+':00') - new Date('2000/1/1 '+time1+':00') >= 9 * 60 * 60 * 1000;
+            },
+            ifError: function(data){
+                var error = false;
+                if(!data.m || !data.n){
+                    error = true;
+                }else{
+                    if(!this.ifEnough(data.m,data.n)){
+                        error = true;
+                    }
+                }
+                return error;
+            },
+            dealTodayError(data){
+                var error = this.ifError(data);
+                error ? night.classList.add('error') : night.classList.remove('error');
             },
             renderDakaDom: function(mn,time){
                 var target = document.getElementById(mn == 'm' ? 'morning' : 'night');
@@ -146,9 +168,15 @@
                 if(data[date]){
                     m = data[date].m || '';
                     n = data[date].n || '';
+                }else{
+                    data[date] = {
+                        m: '',
+                        n: ''
+                    }
                 }
                 this.renderDakaDom('m',m);
                 this.renderDakaDom('n',n);
+                this.dealTodayError(data[date]);
             },
             renderThisMonthCL: function(){
                 var date = new Date();
@@ -285,17 +313,19 @@
         }
         function bind(){
             touch.on( morning, 'tap', function(){
-                DK.daka('m');
+                if(!morning.innerHTML){
+                    DK.daka('m');
+                }
             })
-            touch.on( morning, 'doubletap swiperight', function(){
-                DK.cancel('m');
-            })
+            // touch.on( morning, 'doubletap swiperight', function(){
+            //     DK.cancel('m');
+            // })
             touch.on( night, 'tap', function(){
                 DK.daka('n');
             })
-            touch.on( night, 'doubletap swiperight', function(){
-                DK.cancel('n');
-            })
+            // touch.on( night, 'doubletap swiperight', function(){
+            //     DK.cancel('n');
+            // })
             // 隐藏收起浮层
             touch.on( document, 'swipedown', function(){
                 DK.showLog()
