@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <style type="text/css">body{color:#fff;background:#fff;}</style>
-    <script type="text/javascript" src="ls.min.js"></script>
+    <script type="text/javascript" src="ls.min.js?v=1.0.0"></script>
     <!-- <link rel="stylesheet" type="text/css" href="index.css"> -->
 </head>
 <body>
@@ -43,18 +43,33 @@
     <!-- <script src="index.js"></script> -->
     <script type="text/javascript">
         if(window.location.origin == 'file://'){
-            whir.res.linkJs('https://cdn.bootcss.com/touchjs/0.2.14/touch.js',function(){
-                whir.res.linkJs('index.js');
+            LsJsCss.linkJs('https://cdn.bootcss.com/touchjs/0.2.14/touch.js',function(){
+                LsJsCss.linkJs('index.js');
             });
-            whir.res.linkCss('index.css');
+            LsJsCss.linkCss('index.css');
         }else{
-            var version = "1.0.4"
+            var js = {
+                touch: {
+                    url: 'https://cdn.bootcss.com/touchjs/0.2.14/touch.js',
+                    version: "1.0.0"
+                },
+                index: {
+                    url: 'index.js',
+                    version: "1.0.4"
+                },
+            }
+            var css = {
+                index: {
+                    url: 'index.css',
+                    version: "1.0.4"
+                }
+            }
             var v = "?v="+version;
-            whir.res.pageVersion = version;  //页面版本，用于检测是否需要更新缓存
-            whir.res.loadJs("touch", "https://cdn.bootcss.com/touchjs/0.2.14/touch.js"+v,function () {
-                 whir.res.loadJs("index", "index.js"+v, null);
+            LsJsCss.pageVersion = version;  //页面版本，用于检测是否需要更新缓存
+            LsJsCss.loadJs("touch", js.touch,function () {
+                 LsJsCss.loadJs("index", js.index, null);
              });
-            whir.res.loadCss("css", "index.css"+v, null);
+            LsJsCss.loadCss("index", css.index, null);
         }
     </script>
 </body>

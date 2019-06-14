@@ -1,27 +1,28 @@
-var whir = window.whir || {};
-whir.res = {
-    pageVersion: "", //页面版本，由页面输出，用于刷新localStorage缓存
+var LsJsCss = window.LsJsCss || {};
+LsJsCss = {
     //动态加载js文件并缓存
-    loadJs: function(name, url, callback) {
+    loadJs: function(name, source, callback) {
+        name = 'js_'+name;
+        name_version = 'js_'+name+'_ver';
         if (window.localStorage) {
             var xhr;
             var js = localStorage.getItem(name);
-            if (js == null || js.length == 0 || this.pageVersion != localStorage.getItem("version")) {
+            if (js == null || js.length == 0 || source.version != localStorage.getItem(name_version)) {
                 if (window.ActiveXObject) {
                     xhr = new ActiveXObject("Microsoft.XMLHTTP");
                 } else if (window.XMLHttpRequest) {
                     xhr = new XMLHttpRequest();
                 }
                 if (xhr != null) {
-                    xhr.open("GET", url);
+                    xhr.open("GET", source.url+'?ver='+source.version);
                     xhr.send(null);
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState == 4 && xhr.status == 200) {
                             js = xhr.responseText;
                             localStorage.setItem(name, js);
-                            localStorage.setItem("version", whir.res.pageVersion);
+                            localStorage.setItem(name_version, source.version);
                             js = js == null ? "" : js;
-                            whir.res.writeJs(js);
+                            LsJsCss.writeJs(js);
                             if (callback != null) {
                                 callback(); //回调，执行下一个引用
                             }
@@ -29,45 +30,47 @@ whir.res = {
                     };
                 }
             } else {
-                whir.res.writeJs(js);
+                LsJsCss.writeJs(js);
                 if (callback != null) {
                     callback(); //回调，执行下一个引用
                 }
             }
         } else {
-            whir.res.linkJs(url);
+            LsJsCss.linkJs(url);
         }
     },
-    loadCss: function(name, url) {
+    loadCss: function(name, source) {
+        name = 'css_'+name;
+        name_version = 'css_'+name+'_ver';
         if (window.localStorage) {
             var xhr;
             var css = localStorage.getItem(name);
-            if (css == null || css.length == 0 || this.pageVersion != localStorage.getItem("version")) {
+            if (css == null || css.length == 0 || source.version != localStorage.getItem(name_version)) {
                 if (window.ActiveXObject) {
                     xhr = new ActiveXObject("Microsoft.XMLHTTP");
                 } else if (window.XMLHttpRequest) {
                     xhr = new XMLHttpRequest();
                 }
                 if (xhr != null) {
-                    xhr.open("GET", url);
+                    xhr.open("GET", source.url+'?ver='+source.version);
                     xhr.send(null);
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState == 4 && xhr.status == 200) {
                             css = xhr.responseText;
                             localStorage.setItem(name, css);
-                            localStorage.setItem("version", whir.res.pageVersion);
+                            localStorage.setItem(name_version, source.version);
                             css = css == null ? "" : css;
                             css = css.replace(/images\//g, "style/images/"); //css里的图片路径需单独处理
-                            whir.res.writeCss(css);
+                            LsJsCss.writeCss(css);
                         }
                     };
                 }
             } else {
                 css = css.replace(/images\//g, "style/images/"); //css里的图片路径需单独处理
-                whir.res.writeCss(css);
+                LsJsCss.writeCss(css);
             }
         } else {
-            whir.res.linkCss(url);
+            LsJsCss.linkCss(url);
         }
     },
     //往页面写入js脚本
