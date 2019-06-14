@@ -171,6 +171,9 @@ var DK = {
                         noNeedData = 'noNeedData';
                     }
                 }
+                if(!hasNight && new Date() > dateS && (new Date() - dateS <= 24 * 60 * 60 * 1000) && new Date().getHours() <= 18){
+                    error = '';
+                }
                 arr.push('<li class="'+[hasMorning,hasNight,error,noNeedData].join(' ')+'" data-date="'+date+'"><span>'+i+'</span><span class="m">'+(ndata.m || '')+'</span><span class="n">'+(ndata.n || '')+'</span></li>');
             }
             return arr;
