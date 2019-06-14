@@ -15,7 +15,7 @@ html,body,div,p,ul,li,h3{margin: 0;padding: 0;list-style:none;}
 .logs li:nth-child(7n+6),.logs li:nth-child(7n+7){opacity:0.6;}
 .logs li.title{ height: 40px;line-height: 40px;font-size: 14px;}
 .logs li span{position: relative;z-index:2;}
-.logs li span{display:block;font-size: 12px;height: 20px;color:#666;}
+.logs li span{display:block;font-size: 12px;height: 20px;line-height: 20px;color:#666;}
 /*.logs li:before,.logs li:after{content:'';background: #77C34F;height: 50%;position: absolute;left:0;width: 100%;display:none;z-index:1;}
 .logs li.hasMorning:before{display:block;top: 0;}
 .logs li.hasNight:after{display:block;bottom: 0;}*/

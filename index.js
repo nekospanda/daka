@@ -297,7 +297,7 @@ function bind(){
     })
     // 重置
     touch.on( btnReset, 'tap', function(){
-        window.confirm('重置会情况所有缓存数据，请三思') && DK.reset();
+        window.confirm('重置会情况所有缓存数据\n请三思') && DK.reset();
     })
 }
 
