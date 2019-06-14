@@ -212,7 +212,7 @@ var DK = {
     showHelp: function(){
         var helpShow = store.get('help',true);
         if(!helpShow){
-            alert('单击/双击：打卡/取消打卡\n上划/下滑：显示/隐藏浮层');
+            alert('单击：打卡\n上划/下滑：显示/隐藏浮层');
             store.set('help',0,true);
         }
     },
