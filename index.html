@@ -48,7 +48,7 @@
             });
             whir.res.linkCss('index.css');
         }else{
-            whir.res.pageVersion = "1.0";  //页面版本，用于检测是否需要更新缓存
+            whir.res.pageVersion = "1.0.1";  //页面版本，用于检测是否需要更新缓存
             whir.res.loadJs("touch", "https://cdn.bootcss.com/touchjs/0.2.14/touch.js",function () {
                  whir.res.loadJs("index", "index.js", null);
              });
