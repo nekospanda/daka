@@ -1,0 +1,32 @@
+html,body{height:100%;font-size: 12px;color:#666;}
+html,body,div,p,ul,li,h3{margin: 0;padding: 0;list-style:none;}
+.app,.daka{height: 100%;position: relative;}
+.daka-item{height: 50%;border:1px solid #ddd;font-size: 30px;display: flex;align-items: center;justify-content: space-around;box-sizing: border-box;}
+.daka-item.active{ background: #77C34F;color:#fff;}
+.daka-item.error{ background:red;}
+.slip{ position: absolute;width: 100%;height: 100%;left: 0;background:#fff;top:-100%;opacity:1;transition: all .6s;-webkit-transition: all .6s;overflow:hidden;
+    /*top:0;opacity:1;*/
+}
+.slip.active{ top:0;opacity:1;}
+.logs{width: 100%;height: 100%;box-sizing: border-box;padding-bottom: 40px;overflow:auto;}
+.logs h3{ text-align: center;font-size: 14px;font-weight: bold;background:#efefef;height: 30px;line-height:30px;}
+.logs ul:after{content:'';display:block;clear:both;}
+.logs li{width: 14%;height: 70px;margin-top: 5px;padding:0 5px;float:left;font-size: 20px;text-align: center;position: relative;box-sizing: border-box;border-bottom: 1px solid #ddd;}
+.logs li:nth-child(7n+6),.logs li:nth-child(7n+7){opacity:0.6;}
+.logs li.title{ height: 40px;line-height: 40px;font-size: 14px;}
+.logs li span{position: relative;z-index:2;}
+.logs li span{display:block;font-size: 12px;height: 20px;color:#666;}
+/*.logs li:before,.logs li:after{content:'';background: #77C34F;height: 50%;position: absolute;left:0;width: 100%;display:none;z-index:1;}
+.logs li.hasMorning:before{display:block;top: 0;}
+.logs li.hasNight:after{display:block;bottom: 0;}*/
+.logs li .m,.logs li .n{ background: #77C34F;color:#fff;margin-top: 1px;}
+.logs li.error .m,.logs li.error .n{ background:red;}
+.logs li.noNeedData .m,.logs li.noNeedData .n{ background:none;}
+/*.logs li.hasMorning.hasNight{color:#fff;}*/
+.btns{position: absolute;left: 0;bottom: 0;width: 100%;height: 40px;z-index:3;display:flex;align-items: center;justify-content: space-around;background:#fff;padding-bottom: 5px;}
+.btns span{ font-size: 15px;padding:10px 20px; background:#ddd;border-radius:5px;}
+.btns span{ background:#1DB0B8;color:#fff;}
+.btns span.active{background:#37C6C0;}
+.helps{ position: absolute;bottom: 100%;width: 100%;left:0;text-align: center;line-height:20px;padding:10px 0;background:#ddd;transition:opacity .6s;opacity: 0;}
+.btnHelp:active+.helps{opacity:1;}
+.hide{ display:none;}
