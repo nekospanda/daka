@@ -154,7 +154,7 @@ var DK = {
             return arr;
         }
         function getThisDom(l,data,m,y) {
-            var arr = [],hasMorning = '',hasNight = '',error='',ndata = {},date,dateS,noNeedData;
+            var arr = [],hasMorning = '',hasNight = '',error='',ndata = {},date,dateS,noNeedData,today;
             for (var i = 1; i <= l; i++) {
                 dateS = new Date(y+'/'+m+'/'+i+' 00:00:00');
                 date = getDate(dateS);
@@ -163,6 +163,7 @@ var DK = {
                 hasNight = ndata.n ? 'hasNight' : '';
                 error = _this.ifError(ndata) ? 'error' : '';
                 noNeedData = '';
+                today = '';
                 if(!hasMorning && !hasNight){
                     // 无数据 周六日不需要打卡
                     // 无数据 在今天以后的不需要打卡
@@ -171,10 +172,13 @@ var DK = {
                         noNeedData = 'noNeedData';
                     }
                 }
-                if(!hasNight && new Date() > dateS && (new Date() - dateS <= 24 * 60 * 60 * 1000) && new Date().getHours() <= 18){
+                if(new Date() >= dateS && new Date() - dateS <= 24 * 60 * 60 * 1000){
+                    today = 'today';
+                }
+                if(!hasNight && today && new Date().getHours() <= 18){
                     error = '';
                 }
-                arr.push('<li class="'+[hasMorning,hasNight,error,noNeedData].join(' ')+'" data-date="'+date+'"><span>'+i+'</span><span class="m">'+(ndata.m || '')+'</span><span class="n">'+(ndata.n || '')+'</span></li>');
+                arr.push('<li class="'+[hasMorning,hasNight,error,noNeedData,today].join(' ')+'" data-date="'+date+'"><span>'+i+'</span><span class="m">'+(ndata.m || '')+'</span><span class="n">'+(ndata.n || '')+'</span></li>');
             }
             return arr;
         }
@@ -195,6 +199,8 @@ var DK = {
         lastMonth.classList.add('hide');
     },
     reset: function(){
+        store.cleanAll();
+        window.location.reload();
         Data = {
             month: new Date().getMonth() + 1,
             lastMonth: {},
