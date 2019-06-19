@@ -42,6 +42,14 @@ var Data = {
     thisMonth: {}
 }
 var DK = {
+    changeThisMonthData: function(date,m,n){
+        if(!Data.thisMonth[date]){
+           Data.thisMonth[date] = {};
+        }
+        Data.thisMonth[date].m = m;
+        Data.thisMonth[date].n = n;
+        this.updateData();
+    },
     daka: function(mn){
         var time = getTime();
         var date = getDate();
@@ -212,7 +220,7 @@ var DK = {
     showHelp: function(){
         var helpShow = store.get('help',true);
         if(!helpShow){
-            alert('单击：打卡\n上划/下滑：显示/隐藏浮层');
+            alert('单击：打卡\n上划/下滑：显示/隐藏浮层\n双击日期：修改本月某天数据');
             store.set('help',0,true);
         }
     },
@@ -295,6 +303,35 @@ function bind(){
     })
     touch.on( BtnSlideUp, 'tap', function(){
         DK.hideLog()
+    })
+    touch.on( thisMonthLog, 'doubletap', 'li', function(event){
+        event = event || window.event;
+        var target = event.target;
+        var parent = target.parentNode;
+        if(parent.nodeName.toLowerCase() == 'li'){
+            target = parent;
+        }
+        if(target.nodeName.toLowerCase() != 'li'){
+            return false;
+        }
+        var date = target.getAttribute('data-date');
+        var dateS = new Date(date + ' 00:00:00');
+        if(new Date() >= dateS && new Date() - dateS <= 24 * 60 * 60 * 1000){
+            console.log('不能修改今天的数据');
+            return false;
+        }
+        if(dateS >= new Date()){
+            console.log('不能修改今天之后的数据');
+            return false;   
+        }
+        // 如果是打卡异常的，双击纠正
+        if(window.confirm('确认修改数据')){
+            if(target.classList.contains('error') || target.classList.contains('noNeedData')){
+                DK.changeThisMonthData(date,'9:00','18:00');
+            }else{
+                DK.changeThisMonthData(date,'','');
+            }   
+        }
     })
     // 隐藏显示上月
     touch.on( btnShowLastMonth, 'tap', function(){
