@@ -315,13 +315,13 @@ function bind(){
             return false;
         }
         var date = target.getAttribute('data-date');
-        var dateS = new Date(date + ' 00:00:00');
+        var dateS = new Date(date.replace(/-/g,'/') + ' 00:00:00');
         if(new Date() >= dateS && new Date() - dateS <= 24 * 60 * 60 * 1000){
-            console.log('不能修改今天的数据');
+            alert('不能修改今天的数据');
             return false;
         }
         if(dateS >= new Date()){
-            console.log('不能修改今天之后的数据');
+            alert('不能修改今天之后的数据');
             return false;   
         }
         // 如果是打卡异常的，双击纠正
